@@ -2,7 +2,7 @@
 require('script-loader!file-saver')
 require('script-loader!excel/Blob')
 require('script-loader!xlsx/dist/xlsx.core.min')
-function generateArray(table) {
+function generateArray (table) {
   var out = []
   var rows = table.querySelectorAll('tr')
   var ranges = []
@@ -18,7 +18,7 @@ function generateArray(table) {
       if (cellValue !== '' && cellValue == +cellValue) cellValue = +cellValue
 
       //Skip ranges
-      ranges.forEach(function(range) {
+      ranges.forEach(function (range) {
         if (
           R >= range.s.r &&
           R <= range.e.r &&
@@ -40,7 +40,6 @@ function generateArray(table) {
       }
       //Handle Value
       outRow.push(cellValue !== '' ? cellValue : null)
-
       //Handle Colspan
       if (colspan) for (var k = 0; k < colspan - 1; ++k) outRow.push(null)
     }
@@ -49,13 +48,13 @@ function generateArray(table) {
   return [out, ranges]
 }
 
-function datenum(v, date1904) {
+function datenum (v, date1904) {
   if (date1904) v += 1462
   var epoch = Date.parse(v)
   return (epoch - new Date(Date.UTC(1899, 11, 30))) / (24 * 60 * 60 * 1000)
 }
 
-function sheet_from_array_of_arrays(data, opts) {
+function sheet_from_array_of_arrays (data, opts) {
   var ws = {}
   var range = { s: { c: 10000000, r: 10000000 }, e: { c: 0, r: 0 } }
   for (var R = 0; R != data.length; ++R) {
@@ -83,29 +82,50 @@ function sheet_from_array_of_arrays(data, opts) {
   return ws
 }
 
-function Workbook() {
+function Workbook () {
   if (!(this instanceof Workbook)) return new Workbook()
   this.SheetNames = []
   this.Sheets = {}
 }
 
-function s2ab(s) {
+function s2ab (s) {
   var buf = new ArrayBuffer(s.length)
   var view = new Uint8Array(buf)
   for (var i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
   return buf
 }
 
-export function export_table_to_excel(id) {
-  var theTable = document.getElementById(id)
-  console.log('a')
-  var oo = generateArray(theTable)
-  var ranges = oo[1]
+export function export_table_to_excel (col, tbd, excelName = '默认导出', sheetName = 'SheetJS') {
+  // var theTable = document.getElementById(id)
+  // var oo = generateArray(theTable)
+  let th1 = []  //一级表头
+  let th2 = []  //二级表头
+  let data = []
+  col.forEach(v => {
+    th1.push(v.title)
+    th2.push('')
+    if (v.children) { //按照是否有children，留空单元格位置
+      th2.pop()
+      v.children.forEach(j => {
+        th1.push('')
+        th2.push(j.title)
+      })
+      th1.pop()
+    }
+  })
+  data.push(th1, th2)
+  let trs = tbd.map(v => Object.values(v))  //表格数据整理
+  for (var i = 0; i < 2501; i++) {  //增加到1w条
+    data.push(...trs)
+  }
+  console.log(data);
+  // return
+
+  var ranges = []
+  // var ranges = oo[1]
 
   /* original data */
-  var data = oo[0]
-  var ws_name = 'SheetJS'
-  console.log(data)
+  // var data = oo[0]
 
   var wb = new Workbook(),
     ws = sheet_from_array_of_arrays(data)
@@ -115,25 +135,24 @@ export function export_table_to_excel(id) {
   ws['!merges'] = ranges
 
   /* add worksheet to workbook */
-  wb.SheetNames.push(ws_name)
-  wb.Sheets[ws_name] = ws
+  wb.SheetNames.push(sheetName)
+  wb.Sheets[sheetName] = ws
 
   var wbout = XLSX.write(wb, {
     bookType: 'xlsx',
     bookSST: false,
     type: 'binary'
   })
-
   saveAs(
     new Blob([s2ab(wbout)], { type: 'application/octet-stream' }),
-    'test.xlsx'
+    `${excelName}.xlsx`
   )
 }
 
-function formatJson(jsonData) {
+function formatJson (jsonData) {
   console.log(jsonData)
 }
-export function export_json_to_excel(th, jsonData, defaultTitle) {
+export function export_json_to_excel (th, jsonData, defaultTitle) {
   /* original data */
 
   var data = jsonData

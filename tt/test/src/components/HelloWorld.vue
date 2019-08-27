@@ -16,47 +16,57 @@ export default {
       columns: [
         {
           title: '姓名',
-          slot: 'name'
+          key: 'name'
         },
         {
           title: '年龄',
-          slot: 'age'
+          key: 'age'
         },
         {
           title: '地址',
-          slot: 'address'
+          key: 'address',
+          children: [
+            {
+              title: '二级地址',
+              key: 'address2'
+            },
+            {
+              title: '三级地址',
+              key: 'address3'
+            },
+          ]
         },
         {
           title: '一',
-          slot: 'a'
+          key: 'a'
         },
         {
           title: '二',
-          slot: 'b'
+          key: 'b'
         },
         {
           title: '三',
-          slot: 'c'
+          key: 'c'
         },
         {
           title: '四',
-          slot: 'd'
+          key: 'd'
         },
         {
           title: '五',
-          slot: 'e'
+          key: 'e'
         },
         {
           title: '六',
-          slot: 'f'
+          key: 'f'
         },
       ],
       tableData: [
         {
           name: 'John Brown',
           age: 18,
-          address: 'New York No. 1 Lake Park',
-          date: '2016-10-03',
+          address2: 'New York',
+          address3: 'No. 1 Lake Park',
           a: 'aregcwe',
           b: 'avtvdrs',
           c: 'adsfaewa',
@@ -67,8 +77,8 @@ export default {
         {
           name: 'Jim Green',
           age: 24,
-          address: 'London No. 1 Lake Park',
-          date: '2016-10-01',
+          address2: 'London',
+          address3: 'No. 1 Lake Park',
           a: 1345452,
           b: 'asdfaef',
           c: 'sd32fsdvds',
@@ -79,8 +89,8 @@ export default {
         {
           name: 'Joe Black',
           age: 30,
-          address: 'Sydney No. 1 Lake Park',
-          date: '2016-10-02',
+          address2: 'Sydney',
+          address3: 'No. 1 Lake Park',
           a: 'zdsvzevz',
           b: '342342342',
           c: 32325,
@@ -91,8 +101,8 @@ export default {
         {
           name: 'Jon Snow',
           age: 26,
-          address: 'Ottawa No. 2 Lake Park',
-          date: '2016-10-04',
+          address2: 'Ottawa',
+          address3: 'No. 2 Lake Park',
           a: 'viwjoe',
           b: 'vo8wejf9',
           c: 'moiefo8',
