@@ -132,33 +132,33 @@ export default {
       })
     },
 
-    // fuzadaochu () {
-    //   let XLSX = require('xlsx');
-    //   let workbook = XLSX.utils.book_new()
-    //   let tableSheet = XLSX.utils.table_to_sheet(document.getElementById('table'))
-    //   this.trimData(tableSheet)
-    //   console.log(tableSheet);
-    //   return
-    //   XLSX.utils.book_append_sheet(workbook, tableSheet, 'sheet1')
-    //   let wbOut = XLSX.write(workbook, {
-    //     bookType: 'xlsx',
-    //     bookSST: true,
-    //     type: 'array'
-    //   })
-    //   saveAs(new Blob([wbOut], { type: 'application/octet-stream' }), '复杂表头导出.xlsx')
-    // },
-    // trimData (obj) {
-    //   for (var o in obj) {
-    //     obj[o].v == '暂无筛选结果' ? delete obj[o] : null;
-    //     if (typeof obj[o] == 'object') {
-    //       this.trimData(obj[o])
-    //     } else {
-    //       if (typeof obj[o] == 'string') {
-    //         obj[o] = obj[o].trim()
-    //       }
-    //     }
-    //   }
-    // }
+  //   fuzadaochu () {
+  //     let XLSX = require('xlsx');
+  //     let workbook = XLSX.utils.book_new()
+  //     let tableSheet = XLSX.utils.table_to_sheet(document.getElementById('table'))
+  //     this.trimData(tableSheet)
+  //     console.log(tableSheet);
+  //     return
+  //     XLSX.utils.book_append_sheet(workbook, tableSheet, 'sheet1')
+  //     let wbOut = XLSX.write(workbook, {
+  //       bookType: 'xlsx',
+  //       bookSST: true,
+  //       type: 'array'
+  //     })
+  //     saveAs(new Blob([wbOut], { type: 'application/octet-stream' }), '复杂表头导出.xlsx')
+  //   },
+  //   trimData (obj) {
+  //     for (var o in obj) {
+  //       obj[o].v == '暂无筛选结果' ? delete obj[o] : null;
+  //       if (typeof obj[o] == 'object') {
+  //         this.trimData(obj[o])
+  //       } else {
+  //         if (typeof obj[o] == 'string') {
+  //           obj[o] = obj[o].trim()
+  //         }
+  //       }
+  //     }
+  //   }
   }
 }
 </script>

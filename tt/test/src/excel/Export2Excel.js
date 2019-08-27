@@ -100,7 +100,7 @@ export function export_table_to_excel (col, tbd, excelName = '默认导出', she
   // var oo = generateArray(theTable)
   let th1 = []  //一级表头
   let th2 = []  //二级表头
-  let data = []
+  let data = [] //表格展示数据
   col.forEach(v => {
     th1.push(v.title)
     th2.push('')
@@ -113,31 +113,37 @@ export function export_table_to_excel (col, tbd, excelName = '默认导出', she
       th1.pop()
     }
   })
-  data.push(th1, th2)
+  data.push(th1, th2) //表格TH数据
   let trs = tbd.map(v => Object.values(v))  //表格数据整理
-  for (var i = 0; i < 2501; i++) {  //增加到1w条
-    data.push(...trs)
-  }
+  data.push(...trs) //表格TD数据
+  // for (var i = 0; i < 2501; i++) {  //增加到1w条
+  //   data.push(...trs)
+  // }
   console.log(data);
-  // return
-
-  var ranges = []
-  // var ranges = oo[1]
-
-  /* original data */
-  // var data = oo[0]
 
   var wb = new Workbook(),
     ws = sheet_from_array_of_arrays(data)
 
-  /* add ranges to worksheet */
-  // ws['!cols'] = ['apple', 'banan'];
+  var ranges = [] //单元格合并规则，s开始，e结束，r行，c列
+  let offset = 0
+  col.forEach((v, i) => {
+    if (v.children) {
+      offset += (v.children.length - 1)
+      ranges.push({ s: { r: 0, c: i }, e: { r: 0, c: (i + v.children.length - 1) } })
+      for (let j = 0; j < v.children.length; j++) {
+        ranges.push({ s: { r: 1, c: (i + j) }, e: { r: 1, c: (i + j) } })
+      }
+    } else {
+      ranges.push({ s: { r: 0, c: (i + offset) }, e: { r: 1, c: (i + offset) } })
+    }
+  })
+  console.log(ranges);
+  // return
   ws['!merges'] = ranges
 
   /* add worksheet to workbook */
-  wb.SheetNames.push(sheetName)
+  wb.SheetNames.push(sheetName) //增加sheet表，表名自定
   wb.Sheets[sheetName] = ws
-
   var wbout = XLSX.write(wb, {
     bookType: 'xlsx',
     bookSST: false,
